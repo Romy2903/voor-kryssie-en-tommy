@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voor Kryssie & Tommy - Thomas' Boekje</title>
+    <style>
+        :root {
+            --bg-color: #fefefe;
+            --text-color: #2d3748;
+            --accent-color: #5a8db0;
+            --secondary-color: #f0f6fa;
+            --border-color: #e1ecf4;
+            --tab-active: #5a8db0;
+            --tab-inactive: #e1ecf4;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a202c;
+            --text-color: #e2e8f0;
+            --accent-color: #7bb3d9;
+            --secondary-color: #2d3748;
+            --border-color: #4a5568;
+            --tab-active: #7bb3d9;
+            --tab-inactive: #4a5568;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .photo-placeholder {
+            display: none;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .dark-mode-toggle {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            opacity: 0.8;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            gap: 5px;
+        }
+
+        .tab {
+            background: var(--tab-inactive);
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 10px 10px 0 0;
+            color: var(--text-color);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .tab.active {
+            background: var(--tab-active);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 2em;
+            margin: 30px 0 20px 0;
+            text-align: center;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+
+        p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .quote-box {
+            background: var(--secondary-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .quote-box strong {
+            color: var(--accent-color);
+            display: block;
+            margin-bottom: 10px;
+            font-style: normal;
+        }
+
+        ul {
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+            font-style: italic;
+            color: var(--accent-color);
+            font-size: 1.1em;
+        }
+
+        .heart {
+            color: #e53e3e;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            body {
+                font-size: 16px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                flex: none;
+                width: 100%;
+                border-radius: 10px;
+                margin-bottom: 5px;
+            }
+            
+            .controls {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+
+        @media print {
+            .controls, .tabs {
+                display: none;
+            }
+            
+            .tab-content {
+                display: block !important;
+            }
+            
+            body {
+                font-size: 14px;
+                color: black;
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌙 Donkere modus</button>
+        </div>
+
+        <div class="header">
+            <h1>Voor Kryssie & Tommy</h1>
+            <p>Een boekje voor de eerste weken met Thomas</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab(event, 'voorwoord')">Voorwoord</button>
+            <button class="tab" onclick="showTab(event, 'samen-zijn')">Samen zijn</button>
+            <button class="tab" onclick="showTab(event, 'naar-huis')">Naar huis</button>
+            <button class="tab" onclick="showTab(event, 'hechting')">Hechting</button>
+            <button class="tab" onclick="showTab(event, 'zelfzorg')">Zelfzorg</button>
+            <button class="tab" onclick="showTab(event, 'samen-ouders')">Samen ouders</button>
+            <button class="tab" onclick="showTab(event, 'nawoord')">Nawoord</button>
+        </div>
+
+        <div id="voorwoord" class="tab-content active">
+            <h2>Voorwoord</h2>
+            
+            <p><strong>Lieve Kryssie en Tommy,</strong></p>
+
+            <p>Thomas is geboren! Jullie zijn ouders geworden van een prachtige zoon. Wat een bijzondere week is dit geweest.</p>
+
+            <p>De eerste dagen gingen anders dan jullie hadden gehoopt - Thomas had wat extra zorg nodig en moest even op de IC. Dat was spannend en zwaar. Maar kijk nu: hij ligt lekker bij jullie op de kamer, jullie kunnen eindelijk ongestoord van elkaar genieten.</p>
+
+            <p>Binnenkort gaan jullie naar huis, als gezin. En dat is zo'n mooie mijlpaal.</p>
+
+            <div class="photo-placeholder">
+                📸 Foto van jullie drieën op de kamer
+            </div>
+
+            <p>Misschien voelt het nog een beetje onwerkelijk. Of zijn jullie gewoon moe van al die spanning. Misschien vragen jullie je af hoe het thuis zal gaan, of jullie het wel goed zullen doen. Kryssie, misschien voel jij je nog fysiek zwak. Tommy, misschien vraag jij je af hoe je het beste kunt helpen.</p>
+
+            <p>Al die gevoelens zijn zo begrijpelijk. Want ook al ligt Thomas nu rustig naast jullie, jullie hebben wel degelijk een intensieve start gehad. En jullie zijn ook gewoon nieuwe ouders - en alle nieuwe ouders hebben vragen en onzekerheden.</p>
+
+            <p>Dit boekje is er voor die eerste weken thuis. Niet omdat er iets mis is, maar omdat iedereen wel wat steun kan gebruiken. Over elkaar leren kennen, over hechting, over vertrouwen krijgen in jezelf als ouders.</p>
+
+            <p>Veel van wat jullie zullen meemaken herkennen alle nieuwe ouders. En ja, sommige dingen voelen misschien wat intenser door jullie bijzondere start. Maar vergeet niet: jullie zijn gewoon ouders geworden van een prachtige zoon die nu veilig bij jullie is.</p>
+
+            <p>Jullie kunnen dit. Jullie hebben al bewezen hoe sterk jullie zijn. Thomas heeft de beste ouders die hij zich kan wensen.</p>
+
+            <p>Van harte gefeliciteerd met jullie zoon. Geniet van elkaar.</p>
+
+            <div class="signature">
+                Met alle liefde,<br>
+                Romy
+            </div>
+        </div>
+
+        <div id="samen-zijn" class="tab-content">
+            <h2>Samen zijn - van het begin af aan</h2>
+
+            <p>Alle ouders leren hun baby kennen. Door samen te zijn, door aanraking, stem en nabijheid. Door kleine momenten van contact die zich opbouwen tot vertrouwen en liefde.</p>
+
+            <p>Jullie hebben Thomas ook vanaf het begin leren kennen - eerst op de IC toen hij wat extra zorg nodig had, en nu jullie eindelijk ongestoord samen kunnen zijn op jullie kamer.</p>
+
+            <h3>Wat is hechting eigenlijk?</h3>
+
+            <p>Hechting is de diepe verbinding tussen ouders en kind. Het gevoel van veiligheid en vertrouwen dat groeit doordat Thomas telkens weer ervaart: "ik ben niet alleen, ik word gezien, ik ben geliefd."</p>
+
+            <p>Dat ontstaat door herhaling - door jullie stem die hij herkent, jullie aanraking, jullie geur. Elke keer dat jullie reageren op wat hij nodig heeft, groeit dat basisgevoel van veiligheid een beetje meer.</p>
+
+            <p>En dat kan overal. Ook als de start wat anders loopt dan verwacht.</p>
+
+            <h3>Die eerste dagen</h3>
+
+            <p>Thomas kwam de wereld in met een nog heel jong zenuwstelsel. Alles was nieuw: licht, geluid, temperatuur, aanraking. Die eerste paar dagen had hij wat extra medische zorg nodig, en dat betekende dat jullie hem even moesten delen met de zorgverleners.</p>
+
+            <p>Dat was niet hoe jullie je de eerste dagen hadden voorgesteld. Jullie wilden hem gewoon vasthouden, ruiken, in alle rust leren kennen. In plaats daarvan waren er monitors, drukke mensen, en het gevoel dat jullie een beetje op de achtergrond stonden.</p>
+
+            <p>Kryssie, misschien voelde jij je machteloos - je wilde hem bij je hebben terwijl je lichaam ook nog aan het herstellen was. Tommy, misschien wist jij niet goed hoe je kon helpen of wat jouw plek was.</p>
+
+            <p>Die gevoelens zijn zo logisch. Want dit was niet het zachte begin dat jullie voor ogen hadden.</p>
+
+            <h3>Maar jullie waren er wél</h3>
+
+            <p>Vergeet niet wat jullie wel deden. Elke keer dat jullie bij Thomas waren, hoorde hij jullie. Rook hij jullie. Voelde hij jullie nabijheid.</p>
+
+            <ul>
+                <li>Jullie stem was vertrouwd, ook toen hij nog klein en kwetsbaar was</li>
+                <li>Jullie aanraking was troost, zelfs als het maar heel kort kon</li>
+                <li>Jullie liefde was voelbaar, ook al voelde het voor jullie soms onhandig</li>
+            </ul>
+
+            <p>Hechting groeit in kleine stukjes. En die stukjes begonnen daar al. In de manier waarop jullie naar hem keken, hem aanraakten, tegen hem praatten.</p>
+
+            <div class="quote-box">
+                <strong>Voor alle ouders geldt:</strong>
+                <em>"Die eerste dagen weet je niet wat je doet."</em><br>
+                <em>"Ik vraag me af of mijn baby me wel kent."</em><br>
+                <em>"Het voelt nog niet natuurlijk."</em><br>
+                <em>"Ik weet niet of ik het wel goed doe."</em>
+            </div>
+
+            <p>Dit zeggen alle nieuwe ouders - of hun baby nu extra zorg nodig had of niet. Het leren kennen van jullie baby is voor iedereen zoeken, proberen, fouten maken en weer opnieuw proberen.</p>
+
+            <h3>Nu jullie samen zijn</h3>
+
+            <p>Wat fijn dat Thomas nu gewoon lekker naast jullie ligt. Eindelijk kunnen jullie ongestoord van elkaar genieten. Hem rustig bekijken, zijn gezichtjes bestuderen, samen zijn zonder dat er iemand anders bij hoeft.</p>
+
+            <p>Misschien merken jullie dat hij wat gevoelig is voor prikkels, of juist heel rustig. Misschien zoekt hij veel nabijheid of heeft hij moeite met kalmeren. Dat kan allemaal - hij went ook nog aan de wereld buiten mama's buik.</p>
+
+            <p>Elke dag dat jullie bij hem zijn, reageren op wat hij nodig heeft, hem helpen kalmeren, bouwen jullie verder aan dat fundament van veiligheid.</p>
+
+            <h3>Binnenkort thuis</h3>
+
+            <p>Straks, als jullie naar huis gaan, krijgt die hechting nog meer ruimte. Geen ziekenhuisroutines, geen andere mensen, gewoon jullie drieën in jullie eigen veilige plek.</p>
+
+            <p>Jullie zijn Thomas' ouders vanaf de eerste seconde dat hij er was. Jullie waren het toen hij extra zorg nodig had, jullie zijn het nu hij lekker bij jullie ligt, en jullie blijven het als jullie straks thuis zijn.</p>
+
+            <p>Die band groeit elke dag - niet omdat het moet, maar omdat liefde dat doet.</p>
+        </div>
+
+        <div id="naar-huis" class="tab-content">
+            <h2>Naar huis: jullie plek als gezin</h2>
+
+            <p>Binnenkort is het zover: Thomas mag naar huis. Van het ziekenhuis naar jullie eigen vertrouwde omgeving, waar jullie eindelijk echt kunnen landen als gezin.</p>
+
+            <p>En misschien voelen jullie zich daar ook een beetje zenuwachtig over.</p>
+
+            <h3>Van zorg door anderen naar zelf zorgen</h3>
+
+            <p>In het ziekenhuis zijn er altijd mensen om jullie heen die weten wat ze doen. Als jullie vragen hebben, kunnen jullie ze stellen. Als er iets mis lijkt, is er meteen hulp.</p>
+
+            <p>Thuis zijn jullie de experts van Thomas. En dat kan een beetje overweldigend voelen - ook voor ouders die een heel gewone start hebben gehad.</p>
+
+            <div class="quote-box">
+                <strong>Alle nieuwe ouders zeggen bij het naar huis gaan:</strong>
+                <em>"Ik weet niet of ik het wel goed doe"</em><br>
+                <em>"Wat als er iets mis is en ik zie het niet?"</em><br>
+                <em>"Het voelt nog niet echt"</em><br>
+                <em>"Ik ben zo moe"</em><br>
+                <em>"Soms weet ik niet wat mijn baby nodig heeft"</em>
+            </div>
+
+            <p>Voor jullie kan dat gevoel misschien wat sterker zijn omdat jullie eerste dagen anders waren dan verwacht. Maar de basis van deze onzekerheid delen jullie met alle verse ouders.</p>
+
+            <h3>Wat jullie misschien voelen</h3>
+
+            <p>Kryssie, misschien voel jij je nog niet helemaal fit en vraag je je af of je wel genoeg energie hebt om voor Thomas te zorgen. Of misschien ben je juist blij om eindelijk thuis te zijn maar ook een beetje bang om het ziekenhuis 'veiligheidsnet' achter te laten.</p>
+
+            <p>Tommy, misschien vraag jij je af hoe je het beste kunt helpen, wat jouw rol is, of hoe jullie samen een ritme gaan vinden.</p>
+
+            <p>Al deze gevoelens zijn zo normaal:</p>
+            <ul>
+                <li><strong>Blijdschap</strong> ("Eindelijk naar huis!")</li>
+                <li><strong>Opluchting</strong> ("We hebben het gered")</li>
+                <li><strong>Zenuwachtigheid</strong> ("Kunnen we dit wel?")</li>
+                <li><strong>Vermoeidheid</strong> ("Het was een intensieve week")</li>
+                <li><strong>Onzekerheid</strong> ("Hoe gaat het thuis?")</li>
+            </ul>
+
+            <h3>Thomas thuis leren kennen</h3>
+
+            <p>Thuis kan Thomas eindelijk écht ontspannen. Geen ziekenhuisgeluiden, geen onbekende mensen, geen medische routines. Gewoon jullie rustige huis, jullie vertrouwde geuren, jullie eigen ritme.</p>
+
+            <p>Misschien merken jullie dat hij thuis anders is dan in het ziekenhuis. Rustiger, of juist actiever. Misschien slaapt hij lekker, of heeft hij even nodig om te wennen. Alle baby's reageren anders op de overgang naar huis.</p>
+
+            <p>Probeer niet meteen 'de juiste aanpak' te vinden. Zoek liever naar wat goed voelt: samen op de bank, huid-op-huid contact, rustig praten tegen hem. Dichtbij zijn is belangrijker dan alles perfect doen.</p>
+
+            <h3>Jullie intuïtie vertrouwen</h3>
+
+            <p>Het mooie van thuis zijn? Jullie kunnen eindelijk volledig afgaan op jullie eigen gevoel. Geen schema's van het ziekenhuis, geen adviezen van tien verschillende zorgverleners. Gewoon jullie drieën die samen uitzoeken hoe het werkt.</p>
+
+            <p>Vertrouw op jullie gevoel. Als Thomas huilt, proberen jullie hem te troosten. Als hij honger lijkt te hebben, geven jullie hem eten. Als hij moe is, helpen jullie hem slapen. Zo simpel kan het zijn.</p>
+
+            <p>En als jullie het niet weten? Dan proberen jullie iets, en als dat niet werkt, proberen jullie iets anders. Zo leren alle ouders.</p>
+
+            <h3>Hechting krijgt alle ruimte</h3>
+
+            <p>Thuis kunnen jullie eindelijk ongestoord bouwen aan jullie band met Thomas. Geen beperkte bezoektijden, geen apparatuur, geen andere mensen die bepalen wanneer jullie bij hem kunnen zijn.</p>
+
+            <p>Nu kunnen jullie écht leren wie hij is:</p>
+            <ul>
+                <li>Hoe hij huilt als hij honger heeft versus als hij moe is</li>
+                <li>Welke geluiden hem kalmeren</li>
+                <li>Hoe hij reageert op jullie stem</li>
+                <li>Wat hem tevreden maakt</li>
+                <li>Hoe hij graag vastgehouden wil worden</li>
+            </ul>
+
+            <p>Die herkenning groeit elke dag. Gewoon door samen te zijn, door aandacht te hebben voor elkaar, door te reageren op wat hij nodig heeft.</p>
+
+            <h3>Kleine stapjes</h3>
+
+            <p>Jullie hoeven niet meteen alles op orde te hebben. Neem het dag voor dag:</p>
+            <ul>
+                <li>Gun jezelf tijd om te wennen aan thuis zijn</li>
+                <li>Vier kleine overwinningen (een rustige voeding, een goed dutje, een mooie knuffelmoment)</li>
+                <li>Vraag om hulp als jullie die nodig hebben</li>
+                <li>Onthoud: Thomas heeft geen perfecte ouders nodig, alleen liefdevolle</li>
+            </ul>
+
+            <h3>Jullie kunnen dit</h3>
+
+            <p>Kijk eens wat jullie al hebben gedaan. Jullie hebben Thomas veilig ter wereld gebracht, door een spannende start heen geholpen, en hem laten groeien tot hij sterk genoeg was om naar huis te gaan.</p>
+
+            <p>Jullie zijn al ouders. Jullie doen het al goed.</p>
+
+            <p>Thuis wordt het alleen maar mooier - omdat jullie eindelijk alle ruimte hebben om van elkaar te genieten.</p>
+        </div>
+
+        <div id="hechting" class="tab-content">
+            <h2>Elkaar leren kennen - hechting in de praktijk</h2>
+
+            <p>Hechting is geen moment waarop ineens alles 'klikt'. Het is een verhaal dat jullie samen met Thomas schrijven - elke dag een beetje meer.</p>
+
+            <p>Net als alle ouders leren jullie elkaar kennen door tijd samen, door aandacht en door kleine herhalingen van veiligheid en liefde.</p>
+
+            <h3>Jullie zijn al bezig</h3>
+
+            <p>Misschien denken jullie: "We moeten nog beginnen met echte hechting." Maar dat klopt niet. Jullie zijn al bezig vanaf de eerste keer dat jullie Thomas zagen, zijn naam fluisterden, zijn handje aanraakten.</p>
+
+            <p>Hechting groeit in alle kleine dingen die jullie al doen:</p>
+            <ul>
+                <li>De manier waarop jullie naar hem kijken tijdens voeden</li>
+                <li>Hoe jullie tegen hem praten als jullie zijn luier verschonen</li>
+                <li>Dat jullie hem oppakken als hij onrustig is</li>
+                <li>Hoe jullie samen zijn in de vroege ochtend, half slapend</li>
+                <li>De geur van jullie huid die hij leert herkennen</li>
+            </ul>
+
+            <p>Dit zijn geen 'technieken' - dit is gewoon ouderschap. En jullie doen het al geweldig.</p>
+
+            <p>Alle baby's hebben hun eigen manier van communiceren. Thomas ook. Het kan even duren voordat jullie zijn 'taal' doorhebben, en dat is heel normaal.</p>
+
+            <div class="quote-box">
+                <strong>Wat alle nieuwe ouders zeggen:</strong>
+                <em>"Ik weet niet altijd wat hij nodig heeft"</em><br>
+                <em>"Soms lukt het troosten niet meteen"</em><br>
+                <em>"Ik vraag me af of hij me herkent"</em><br>
+                <em>"Het voelt nog niet helemaal natuurlijk"</em>
+            </div>
+
+            <p>Die onzekerheid is normaal. Zelfs ouders met een heel gewone start hebben tijd nodig om hun baby's signalen te leren lezen. Het groeit in de praktijk, door samen te zijn.</p>
+
+            <h3>Wat hechting versterkt</h3>
+
+            <p>Kleine, dagelijkse dingen die jullie waarschijnlijk al doen (of makkelijk kunnen uitbreiden):</p>
+
+            <p><strong>Oogcontact</strong> - Thomas leert jullie gezichten kennen. Tijdens voeden, verschonen, of gewoon terwijl jullie hem vasthouden.</p>
+
+            <p><strong>Jullie stem</strong> - Praat gewoon tegen hem. Vertel wat jullie doen ("Nu gaan we je luier verschonen"), zing een liedje, of zeg gewoon wat jullie denken ("Wat ben je toch mooi").</p>
+
+            <p><strong>Huid-op-huid</strong> - Thomas op jullie blote borst of buik. Dit helpt hem kalmeren én helpt jullie elkaars ritme voelen.</p>
+
+            <p><strong>Samen ademen</strong> - Thomas op jullie borst, waar hij jullie ademhaling kan voelen. Rustgevend voor jullie allebei.</p>
+
+            <p><strong>Dragen</strong> - In jullie armen, in een draagdoek, gewoon lekker dichtbij.</p>
+
+            <p><strong>Reageren op zijn signalen</strong> - Hij huilt, jullie komen. Hij kijkt naar jullie, jullie kijken terug. Zo simpel kan het zijn.</p>
+
+            <h3>Thomas' signalen leren kennen</h3>
+
+            <p>Alle baby's hebben hun eigen manier van communiceren. Thomas ook. Het kan even duren voordat jullie zijn 'taal' doorhebben, en dat is heel normaal.</p>
+
+            <p><strong>Als Thomas contact zoekt:</strong></p>
+            <ul>
+                <li>Hij kijkt naar jullie</li>
+                <li>Zijn lichaampje is ontspannen</li>
+                <li>Hij maakt zachte geluidjes</li>
+                <li>Zijn handjes zijn open</li>
+                <li>Hij lijkt alert maar rustig</li>
+            </ul>
+
+            <p><strong>Als Thomas moe of overprikkeld raakt:</strong></p>
+            <ul>
+                <li>Hij kijkt weg</li>
+                <li>Hij wordt onrustig of stijf</li>
+                <li>Hij gaapt, niest of hikt</li>
+                <li>Hij huilt of wordt juist heel stil</li>
+                <li>Zijn handjes gaan dicht</li>
+            </ul>
+
+            <p><strong>Als Thomas honger heeft of ongemak voelt:</strong></p>
+            <ul>
+                <li>Hij maakt sabbelbewegingen</li>
+                <li>Zijn handjes gaan naar zijn mond</li>
+                <li>Hij draait zijn hoofdje naar jullie toe als jullie hem aanraken</li>
+                <li>Hij wordt onrustig en huilt</li>
+            </ul>
+
+            <p>Jullie hoeven niet alle signalen meteen te herkennen. Het gaat erom dat jullie *proberen* te begrijpen wat Thomas nodig heeft. En dat doen jullie al.</p>
+
+            <h3>Als het (nog) niet vanzelf voelt</h3>
+
+            <p>Kryssie, misschien voel jij soms afstand door de vermoeidheid na de bevalling, of omdat je je nog niet helemaal jezelf voelt. Tommy, misschien vraag jij je soms af of Thomas je wel kent of hoe je het beste contact kunt maken.</p>
+
+            <p>Dat is allemaal oké. Ouderschap is een relatie, geen instinct. En relaties groeien in de praktijk.</p>
+
+            <p>Blijf proberen, maar leg de lat niet hoog:</p>
+            <ul>
+                <li>Jullie hoeven Thomas niet altijd meteen te kunnen troosten</li>
+                <li>Jullie mogen fouten maken en het opnieuw proberen</li>
+                <li>Het is oké als niet elke interactie perfect voelt</li>
+                <li>Liefde groeit vaak juist in de ruimte tussen onzekerheid en volhouden</li>
+            </ul>
+
+            <h3>Vertrouw op jullie gevoel</h3>
+
+            <p>Jullie kennen Thomas beter dan wie dan ook. Jullie waren er vanaf het begin. Jullie hebben hem zien groeien van een kleine baby die extra zorg nodig had naar de sterke jongen die nu bij jullie ligt.</p>
+
+            <p>Soms zeggen anderen: "Laat hem huilen" of "Hij manipuleert jullie" of "Jullie verwennen hem." Luister naar jullie eigen gevoel. Thomas is nog heel klein - hij heeft jullie nabijheid nodig, niet omdat hij verwend is, maar omdat hij jullie vertrouwt.</p>
+
+            <h3>Iedere dag telt</h3>
+
+            <p>Hechting bouw je niet op in een week. Het groeit langzaam, in alle kleine momenten van samen zijn. Vandaag kent Thomas jullie een beetje beter dan gisteren. Morgen weer een beetje meer.</p>
+
+            <p>Jullie hoeven het niet perfect te doen. Jullie hoeven alleen maar er te zijn, te proberen, en van hem te houden. De rest komt vanzelf.</p>
+
+            <p>En thuis krijgen jullie eindelijk alle tijd en ruimte om dat te doen.</p>
+        </div>
+
+        <div id="zelfzorg" class="tab-content">
+            <h2>Voor jezelf zorgen - jullie doen ertoe</h2>
+
+            <p>Jullie zijn ouders geworden van Thomas. En in alle aandacht voor hem, vergeten jullie misschien jezelf. Maar jullie doen er ook toe - niet alleen als Thomas' ouders, maar als mensen.</p>
+
+            <p>Zorgen voor jezelf is geen luxe. Het is de basis om er voor Thomas te kunnen zijn, en om van het ouderschap te kunnen genieten.</p>
+
+            <h3>Waarom zelfzorg eigenlijk beter is voor Thomas</h3>
+
+            <p>Misschien denken jullie: "We moeten alle tijd en energie aan Thomas geven, dat hoort zo." Maar hier is wat veel ouders niet beseffen: uitgeputte, lege ouders zijn niet de beste ouders die jullie kunnen zijn.</p>
+
+            <p>Thomas heeft geen perfecte ouders nodig - hij heeft *aanwezige* ouders nodig. Mensen die kunnen genieten van zijn lachje in plaats van alleen maar functioneren. Mensen die geduld hebben tijdens een huilbui in plaats van op de rand van huilen zelf. Mensen die energie hebben om met hem te spelen, niet alleen maar zijn basis-behoeften te vervullen.</p>
+
+            <p>Denk er zo over: als jullie uitgeput zijn, voelt Thomas dat. Baby's zijn gevoelig voor de spanning en stress van hun ouders. Als jullie rustig zijn en goed voor jezelf zorgen, creëren jullie een veiligere, kalme omgeving voor hem.</p>
+
+            <div class="photo-placeholder">
+                📸 Jullie samen ontspannen (misschien met koffie/thee)
+            </div>
+
+            <h3>Jullie zijn niet vervangbaar</h3>
+
+            <p>Thomas heeft niet zomaar verzorgers nodig - hij heeft *jullie* nodig. Zijn mama, zijn papa. Maar hij heeft de beste versie van jullie nodig, niet de versie die op de tandvlees loopt.</p>
+
+            <p>Jullie kunnen hem meer liefde geven als jullie jezelf ook liefde geven. Jullie kunnen beter voor hem zorgen als jullie ook voor jezelf zorgen.</p>
+
+            <h3>Nieuw ouderschap is slopend</h3>
+
+            <p>Alle nieuwe ouders zijn moe. Alle nieuwe ouders vragen zich af of ze het wel goed doen. En alle nieuwe ouders hebben soms het gevoel dat ze zichzelf een beetje kwijt zijn.</p>
+
+            <div class="quote-box">
+                <strong>Wat alle nieuwe ouders zeggen:</strong>
+                <em>"Ik ben zo moe, maar kan niet goed slapen"</em><br>
+                <em>"Ik vergeet steeds dingen"</em><br>
+                <em>"Ik huil soms om niks"</em><br>
+                <em>"Ik voel me niet meer mezelf"</em><br>
+                <em>"Ik heb geen tijd voor mezelf"</em>
+            </div>
+
+            <p>Voor jullie kan dat gevoel misschien wat intenser zijn omdat jullie eerste week zo spannend was. Kryssie, jouw lichaam herstelt ook nog van de bevalling terwijl je je zorgen maakte om Thomas. Tommy, jij hebt waarschijnlijk veel stress gehad en weinig geslapen.</p>
+
+            <p>Het is logisch dat jullie moe zijn. En dat mag.</p>
+
+            <h3>Kleine zelfzorg, grote impact</h3>
+
+            <p>Zelfzorg hoeft niet groots. Het zijn vaak kleine dingen die het verschil maken:</p>
+
+            <p><strong>Lichamelijke basis:</strong></p>
+            <ul>
+                <li>Eten, ook als jullie geen trek hebben (jullie lichaam heeft brandstof nodig)</li>
+                <li>Drinken (genoeg water is belangrijk)</li>
+                <li>Rusten wanneer het kan, ook als jullie hoofd blijft draaien</li>
+                <li>Even naar buiten, al is het maar voor de deur</li>
+            </ul>
+
+            <p><strong>Emotionele ruimte:</strong></p>
+            <ul>
+                <li>Huilen als jullie daaraan toe zijn</li>
+                <li>Lachen om iets geks dat Thomas doet</li>
+                <li>Praten met iemand die echt luistert</li>
+                <li>Zeggen "ik vind het zwaar" zonder dat jullie Thomas minder liefhebben</li>
+            </ul>
+
+            <p><strong>Mentale rust:</strong></p>
+            <ul>
+                <li>Even alleen douchen (met de deur dicht!)</li>
+                <li>Korte wandeling om het blokje</li>
+                <li>Jullie telefoon wegleggen en gewoon zijn</li>
+                <li>Iets doen wat niks met Thomas te maken heeft, al is het maar 10 minuten</li>
+            </ul>
+
+            <p>Jullie hoeven jezelf niet op te offeren voor Thomas. Hij heeft ouders nodig die voor zichzelf zorgen.</p>
+
+            <h3>Gevoelens mogen er zijn</h3>
+
+            <p>Misschien zijn jullie niet gewend om stil te staan bij wat jullie voelen. Of weten jullie niet goed hoe jullie dat moeten doen. Dat is oké - veel mensen hebben dat nooit geleerd.</p>
+
+            <p>Het hoeft niet ingewikkeld. Begin klein:</p>
+
+            <p><strong>Merk op wat jullie lichaam voelt</strong> - Is jullie maag gespannen? Jullie schouders hoog? Zijn jullie warm of koud? Moe of onrustig? Dat zijn ook gevoelens.</p>
+
+            <p><strong>Geef het een naam</strong> - "Ik voel onrust." "Ik ben verdrietig." "Ik weet het niet." Het hoeft niet perfect te zijn.</p>
+
+            <p><strong>Stel jezelf rustige vragen:</strong></p>
+            <ul>
+                <li><em>Wat zou ik nu nodig hebben als ik eerlijk ben?</em></li>
+                <li><em>Als een vriend dit meemaakte, wat zou ik dan tegen hem/haar zeggen?</em></li>
+                <li><em>Waar in mijn lichaam voel ik spanning/verdriet/angst?</em></li>
+            </ul>
+
+            <p><strong>Praat het uit</strong> - Tegen elkaar, tegen een vriend, tegen jezelf hardop. Soms helpt het al om woorden te geven aan wat jullie voelen.</p>
+
+            <p>Jullie hoeven niet diep in jullie gevoel te duiken. Alleen al erkennen dat er iets speelt is een vorm van zorg voor jezelf.</p>
+
+            <h3>Jullie zijn sterker dan jullie denken</h3>
+
+            <p>Kijk eens wat jullie al hebben gedaan. Jullie hebben Thomas veilig ter wereld gebracht. Jullie hebben volgehouden toen het spannend was. Jullie hebben geleerd omgaan met artsen, zorgen, onzekerheid.</p>
+
+            <p>Jullie hebben kracht bewezen. En die kracht is er nog steeds.</p>
+
+            <p>Misschien voelen jullie je nu kwetsbaar of onzeker. Dat mag. Maar vergeet niet: kwetsbaar zijn en sterk zijn kunnen tegelijk waar zijn.</p>
+
+            <h3>Voor jullie allebei</h3>
+
+            <p>Kryssie, jouw lichaam heeft iets ongelooflijks gedaan - Thomas laten groeien en ter wereld gebracht. Geef jezelf tijd om te herstellen, zowel fysiek als emotioneel.</p>
+
+            <p>Tommy, jij hebt ook veel doorstaan. Machteloos toekijken terwijl je vrouw en zoon extra zorg nodig hadden. Jouw zorgen en vermoeidheid tellen ook mee.</p>
+
+            <p>Zorg voor elkaar, maar vergeet jezelf niet.</p>
+
+            <h3>Jullie doen ertoe</h3>
+
+            <p>Thomas heeft geweldige ouders nodig - maar die ouders hoeven niet perfect te zijn. Ze hoeven alleen maar van hem te houden, voor hem te zorgen, en ook voor zichzelf.</p>
+
+            <p>Jullie mogen moe zijn. Jullie mogen twijfelen. Jullie mogen ruimte innemen. Jullie mogen zeggen dat jullie iets moeilijk vinden.</p>
+
+            <p>En jullie mogen ook genieten. Van Thomas' eerste echte glimlach, van zijn warme lijfje tegen jullie aan, van het feit dat jullie het hebben gered en binnenkort samen thuis zijn.</p>
+
+            <p>Zorg goed voor jezelf. Thomas heeft jullie nodig - de echte jullie, niet een uitgeputte versie die alles wegstopt.</p>
+
+            <p>Jullie doen ertoe.</p>
+        </div>
+
+        <div id="samen-ouders" class="tab-content">
+            <h2>Samen ouders zijn - Kryssie en Tommy als team</h2>
+
+            <p>Jullie zijn niet alleen afzonderlijk ouder geworden - jullie zijn samen een gezin geworden. En ook dat vraagt even wennen.</p>
+
+            <p>Want naast leren wie Thomas is, leren jullie ook wie jullie als ouders zijn. En soms kan dat botsen, verwarring geven, of juist nieuwe liefde opwekken.</p>
+
+            <h3>Alle nieuwe ouders voelen dit</h3>
+
+            <p>In de eerste maanden met een baby komt elke relatie onder druk te staan. Niet omdat er iets mis is, maar omdat alles nieuw is:</p>
+
+            <div class="quote-box">
+                <strong>Wat alle nieuwe ouders als koppel ervaren:</strong>
+                <em>"We zijn zo moe dat we elkaar soms verkeerd begrijpen"</em><br>
+                <em>"Ik mis hoe we waren voordat de baby er was"</em><br>
+                <em>"We hebben geen tijd meer voor ons tweeën"</em><br>
+                <em>"We reageren anders op stress"</em><br>
+                <em>"Ik weet niet altijd wat hij/zij nodig heeft"</em>
+            </div>
+
+            <p>Voor jullie kan dit misschien wat intenser voelen omdat jullie eerste week zo spannend was. Maar vergeet niet: de basis van deze uitdagingen delen jullie met alle verse ouders.</p>
+
+            <h3>Jullie reageren misschien anders</h3>
+
+            <p>Kryssie, misschien wil jij praten over wat jullie hebben meegemaakt, terwijl Tommy juist vooruit wil kijken. Of andersom. Misschien zoekt de één controle door alles te organiseren, terwijl de ander juist rust zoekt.</p>
+
+            <p>Tommy, misschien voel jij je soms wat buitengesloten - Kryssie heeft de fysieke verbinding met Thomas door de zwangerschap en eventueel borstvoeding. Kryssie, misschien voel jij je soms overweldigd door alle veranderingen in je lichaam en hoofd.</p>
+
+            <p>Misschien merken jullie:</p>
+            <ul>
+                <li>Dat jullie verschillende zorgen hebben</li>
+                <li>Dat jullie op andere momenten emotioneel zijn</li>
+                <li>Dat jullie anders omgaan met Thomas' signalen</li>
+                <li>Dat jullie verschillende behoeften hebben qua steun of ruimte</li>
+            </ul>
+
+            <p>Dit betekent niet dat jullie uit elkaar groeien. Het betekent dat jullie allebei op jullie eigen manier proberen om deze grote verandering te verwerken. Jullie hebben allebei gelijk - alleen op een andere manier.</p>
+
+            <h3>Kleine gebaren, grote liefde</h3>
+
+            <p>Verbinding hoeft geen diep gesprek te zijn. Juist als jullie moe en overweldigd zijn, zit liefde vaak in heel gewone dingen:</p>
+
+            <ul>
+                <li>Een kopje thee voor elkaar zetten</li>
+                <li>Vragen: "Hoe was het eigenlijk vandaag?"</li>
+                <li>Even elkaars hand vasthouden terwijl Thomas slaapt</li>
+                <li>Een berichtje: "Ik denk aan je"</li>
+                <li>Samen stil zijn zonder dat het ongemakkelijk is</li>
+                <li>Elkaar bedanken voor kleine dingen ("Dank je dat je gisteravond bent opgestaan")</li>
+            </ul>
+
+            <p>Jullie hoeven niet altijd sterk of beschikbaar te zijn voor elkaar. Maar wel bereid om naar elkaar toe te bewegen, ook al is het maar een klein stapje.</p>
+
+            <h3>Ruimte voor elkaars gevoelens</h3>
+
+            <p>Tommy, misschien zie je dat Kryssie huilt en weet je niet wat je moet zeggen. Kryssie, misschien zie je dat Tommy zich wat terugtrekt en vraag je je af of hij wel voelt wat jij voelt.</p>
+
+            <p>Jullie hoeven elkaars gevoelens niet op te lossen. Alleen al zien en erkennen kan genoeg zijn:</p>
+
+            <ul>
+                <li><em>"Ik zie dat je het zwaar hebt"</em></li>
+                <li><em>"Ik weet niet wat ik moet zeggen, maar ik ben hier"</em></li>
+                <li><em>"We hoeven niet hetzelfde te voelen om samen te zijn"</em></li>
+                <li><em>"Het is oké dat jij dit anders ervaart dan ik"</em></li>
+            </ul>
+
+            <p>Soms is gewoon aanwezig zijn de beste steun die jullie elkaar kunnen geven.</p>
+
+            <h3>Jullie liefde is ook belangrijk</h3>
+
+            <p>Het is makkelijk om volledig op te gaan in Thomas. En dat hoort er ook bij - jullie zijn zijn ouders, hij staat voorop.</p>
+
+            <p>Maar jullie relatie is ook een veilige basis. Voor Thomas, maar ook voor jullie zelf. Een sterke, liefdevolle relatie tussen zijn ouders geeft hem veiligheid en stabiliteit.</p>
+
+            <p>Het is niet egoïstisch om daar aandacht aan te geven. Het is wijs.</p>
+
+            <h3>Praktische verbinding</h3>
+
+            <ul>
+                <li><strong>Kleine rituelen</strong> - Een kopje koffie samen voordat Thomas wakker wordt, of even samen op de bank als hij slaapt</li>
+                <li><strong>Complimenten delen</strong> - "Je bent zo'n goede papa/mama" hoort iedereen graag</li>
+                <li><strong>Echt naar elkaar luisteren</strong> - 5 minuten waarin de ander mag vertellen hoe zijn/haar dag was</li>
+                <li><strong>Samen lachen</strong> - Om Thomas' gekke gezichtjes, om iets op tv, om niets</li>
+                <li><strong>Elkaar zien als ouders</strong> - Vertel elkaar wat jullie mooi vinden aan hoe de ander met Thomas omgaat</li>
+            </ul>
+
+            <h3>Jullie zijn een sterk team</h3>
+
+            <p>Kijk eens wat jullie samen al hebben gedaan. Jullie hebben Thomas samen ter wereld gebracht. Jullie hebben samen beslissingen genomen toen hij extra zorg nodig had. Jullie hebben samen gezorgd, samen gehopt, samen doorgezet.</p>
+
+            <p>Dat team dat Thomas door die eerste spannende week heeft geholpen? Dat zijn jullie nog steeds.</p>
+
+            <p>Misschien voelen jullie je nu kwetsbaar, moe, of onzeker. Dat hoort bij deze fase. Maar jullie basis is sterk. Jullie houden van Thomas, en jullie houden van elkaar.</p>
+
+            <h3>Thuis worden jullie nog sterker</h3>
+
+            <p>Straks, als jullie thuis zijn, krijgen jullie eindelijk de rust en ruimte om een ritme te vinden dat bij jullie past. Geen ziekenhuisschema's, geen andere mensen, gewoon jullie drieën die samen uitzoeken hoe het leven eruitziet.</p>
+
+            <p>En als het even niet lukt? Geef jezelf en elkaar grace. Morgen is een nieuwe dag. Volgende week voelt anders. Deze intense periode gaat voorbij.</p>
+
+            <p>Jullie hebben Thomas samen gekregen, samen door de spannende start geholpen, en jullie gaan hem samen groot brengen.</p>
+
+            <p>Dat is iets om trots op te zijn.</p>
+        </div>
+
+        <div id="nawoord" class="tab-content">
+            <h2>Nawoord</h2>
+
+            <p><strong>Lieve Kryssie en Tommy,</strong></p>
+
+            <p>Thomas is er! Jullie zijn ouders geworden van een prachtige jongen, en wat ben ik trots op jullie.</p>
+
+            <p>Deze eerste week was vast niet zoals jullie je hadden voorgesteld. Spannend, intens, vol zorgen en opluchting tegelijk. Maar kijk waar jullie nu staan: Thomas ligt lekker bij jullie, is sterk en gezond, en binnenkort gaan jullie samen naar huis.</p>
+
+            <p>Ik weet dat jullie soms onzeker zullen zijn, moe zullen zijn, of gewoon niet zullen weten wat jullie doen. Dat is zo normaal. Alle ouders voelen dat - jullie zijn niet de enigen.</p>
+
+            <p>Maar jullie kunnen dit. Jullie zijn al bewezen hoe sterk jullie zijn, hoe goed jullie samen kunnen zorgen, hoeveel liefde jullie hebben. Thomas heeft de beste ouders die hij zich kan wensen.</p>
+
+            <p>En vergeet niet: <strong>ik ben er altijd.</strong> Voor een luisterend oor, voor praktische hulp, voor een kopje thee als jullie dat nodig hebben. Voor wat dan ook. Jullie hoeven het niet alleen te doen.</p>
+
+            <p>Ik kan niet wachten om tante Romy te zijn en om te zien hoe jullie drieën samen groeien tot een geweldig gezin.</p>
+
+            <p>Geniet van elkaar. Jullie hebben het verdiend.</p>
+
+            <div class="signature">
+                Met alle liefde,<br>
+                Romy <span class="heart">❤️</span>
+            </div>
+
+            <p><em>P.S. En Marcel is ook al helemaal verliefd op zijn kleine neefje!</em> <span class="heart">❤️</span></p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(evt, tabName) {
+            var i, tabcontent, tabs;
+            
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tabs
+            tabs = document.getElementsByClassName("tab");
+            for (i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            // Show the selected tab content and mark button as active
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const button = document.querySelector('.dark-mode-toggle');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                button.textContent = '🌙 Donkere modus';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                button.textContent = '☀️ Lichte modus';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const button = document.querySelector('.dark-mode-toggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                button.textContent = '☀️ Lichte modus';
+            }
+        });
+
+        // Smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                html {
+                    scroll-behavior: smooth;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
